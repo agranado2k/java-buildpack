@@ -25,7 +25,7 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
         puts "My Snyk detect"
-        "Snyk"
+        nil
       end
     end
   end
