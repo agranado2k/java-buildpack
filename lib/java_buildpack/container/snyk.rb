@@ -9,22 +9,12 @@ module JavaBuildpack
   module Container
     # Encapsulates the detect, compile, and release functionality for applications running a Snyk integration
     class Snyk < JavaBuildpack::Component::BaseComponent
-      def initialize(context)
-        puts "context:"
-        puts "Application"
-        puts context[:application]
-        puts "space_case"
-        puts self.class.to_s.space_case
-        puts "Application"
-        puts context[:configuration]
-        puts "Droplet"
-        puts context[:droplet]
-        super(context)
-      end
-
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
         puts "My Snyk detect"
+        Dir.chdir("/tmp/app")
+        puts Dir.pwd
+        puts Dir.glob("*")
         nil
       end
     end
