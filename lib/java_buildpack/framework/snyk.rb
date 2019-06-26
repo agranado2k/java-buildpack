@@ -31,10 +31,15 @@ module JavaBuildpack
         Dir.glob("*").each do |file|
           file_path = "#{dir}/#{file}"
           sha1_hash = sha1_for(file_path)
-          mvn_dependency_info(sha1_hash)
+          package_info = mvn_dependency_info(sha1_hash)
+          vulnerabilities(package_info)
         end
         "Snyk"
       end
+
+      def compile; end
+
+      def release; end
 
       private
 
@@ -52,8 +57,27 @@ module JavaBuildpack
         http.use_ssl = true
         request = Net::HTTP::Get.new("/solrsearch/select?q=1:'#{sha1_hash}'&wt=json")
         response = http.request(request)
+        format_mvn_response(JSON.parse(response.body, symbolize_names: true))
+      end
+
+      def format_mvn_response(json)
+        response = json[:response][:docs]
+        group_id = response[:g]
+        artifact_id = response[:a]
+        version = response[:v]
+
+        t = {group_id: group_id, artifact_id, artifact_id, version: version}
+        puts "package info: #{t}"
+        t
+      end
+
+      def vulnerabilities(package)
+        uri = URI.parse(@vunl_service_base_api)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        request = Net::HTTP::Get.new("/vulnerabilities?group_id=#{package[:group_id]}&artifact_id=#{package[:artifact_id]}&version=#{package[:version]}")
+        response = http.request(request)
         json = JSON.parse(response.body, symbolize_names: true)
-        puts "Response:"
         puts json
         json
       end
