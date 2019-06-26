@@ -23,6 +23,7 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
+        vuln = []
         puts "My Snyk detect"
         puts "mvn_org_base_api: #{@mvn_org_base_api}"
         puts "vunl_service_base_api: #{@vunl_service_base_api}"
@@ -32,8 +33,10 @@ module JavaBuildpack
           file_path = "#{dir}/#{file}"
           sha1_hash = sha1_for(file_path)
           package_info = mvn_dependency_info(sha1_hash)
-          vulnerabilities(package_info)
+          vuln = vuln.merge(vulnerabilities(package_info))
         end
+        puts "All vulnerabilities"
+        puts vuln
         "Snyk"
       end
 
@@ -64,23 +67,23 @@ module JavaBuildpack
         puts "json: #{json}"
         response = json[:response][:docs][0]
         puts "response: #{response}"
-        group_id = response[:g]
-        artifact_id = response[:a]
-        version = response[:v]
+        return nil unless response
 
-        t = {group_id: group_id, artifact_id: artifact_id, version: version}
+        t = {group_id: response[:g], artifact_id: response[:a], version: response[:v]}
         puts "package info: #{t}"
         t
       end
 
       def vulnerabilities(package)
+        return [] unless package
+
         uri = URI.parse(@vunl_service_base_api)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
         request = Net::HTTP::Get.new("/vulnerabilities?group_id=#{package[:group_id]}&artifact_id=#{package[:artifact_id]}&version=#{package[:version]}")
         response = http.request(request)
         json = JSON.parse(response.body, symbolize_names: true)
-        puts json
+        puts "vulnerabilities list: #{json}"
         json
       end
     end
