@@ -6,6 +6,7 @@ require 'java_buildpack/util/qualify_path'
 require 'java_buildpack/util/spring_boot_utils'
 require 'digest'
 require "net/http"
+require 'net/https'
 require "uri"
 
 module JavaBuildpack
@@ -48,6 +49,7 @@ module JavaBuildpack
       def mvn_dependency_info(sha1_hash)
         uri = URI.parse(@mvn_org_base_api)
         http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
         request = Net::HTTP::Get.new("/solrsearch/select?q=1:'#{sha1_hash}'&wt=json")
         response = http.request(request)
         json = JSON.parse(response.body, symbolize_names: true)
