@@ -1,3 +1,5 @@
 # Configuration for the Snyk container
 ---
-snyk:
+version: 1
+mvn_org_base_api: https://search.maven.org
+vunl_service_base_api: https://salty-taiga-13139.herokuapp.com
