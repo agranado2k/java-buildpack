@@ -66,7 +66,7 @@ module JavaBuildpack
         artifact_id = response[:a]
         version = response[:v]
 
-        t = {group_id: group_id, artifact_id, artifact_id, version: version}
+        t = {group_id: group_id, artifact_id: artifact_id, version: version}
         puts "package info: #{t}"
         t
       end
