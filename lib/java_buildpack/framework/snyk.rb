@@ -62,7 +62,7 @@ module JavaBuildpack
 
       def format_mvn_response(json)
         puts "json: #{json}"
-        response = json[:response][:docs]
+        response = json[:response][:docs][0]
         puts "response: #{response}"
         group_id = response[:g]
         artifact_id = response[:a]
