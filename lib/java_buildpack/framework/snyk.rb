@@ -55,7 +55,7 @@ module JavaBuildpack
         uri = URI.parse(@mvn_org_base_api)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
-        request = Net::HTTP::Get.new("/solrsearch/select?q=1:'#{sha1_hash}'&wt=json")
+        request = Net::HTTP::Get.new("/solrsearch/select?q=1:#{sha1_hash}&wt=json")
         response = http.request(request)
         format_mvn_response(JSON.parse(response.body, symbolize_names: true))
       end
