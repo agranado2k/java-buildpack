@@ -12,7 +12,6 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
         puts "My Snyk detect"
-        Dir.chdir("/tmp/app")
         puts Dir.pwd
         puts Dir.glob("*")
         nil
