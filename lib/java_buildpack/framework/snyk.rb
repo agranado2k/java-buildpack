@@ -32,7 +32,7 @@ module JavaBuildpack
           sha1_hash = sha1.hexdigest
           puts "Checksum SHA1: #{ sha1_hash}"
 
-          url = "#{mvn_org_base_api}/solrsearch/select?q=1:'#{sha1_hash}'&wt=json"
+          url = "#{@mvn_org_base_api}/solrsearch/select?q=1:'#{sha1_hash}'&wt=json"
           uri = URI.parse(url)
           http = Net::HTTP.new(uri.host, uri.port)
           request = Net::HTTP::Get.new("/search?question=somequestion")
