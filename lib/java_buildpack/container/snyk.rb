@@ -12,10 +12,7 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
         puts "My Snyk detect"
-        Dir.chdir("app")
-        puts Dir.pwd
-        puts Dir.glob("*")
-        Dir.chdir("/tmp/app/WEB-INF")
+        Dir.chdir("/tmp/app/WEB-INF/lib")
         puts Dir.pwd
         puts Dir.glob("*")
         nil
