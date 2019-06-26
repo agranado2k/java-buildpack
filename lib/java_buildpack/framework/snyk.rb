@@ -33,7 +33,7 @@ module JavaBuildpack
           file_path = "#{dir}/#{file}"
           sha1_hash = sha1_for(file_path)
           package_info = mvn_dependency_info(sha1_hash)
-          vuln = vuln.merge(vulnerabilities(package_info))
+          vuln = vuln.concat(vulnerabilities(package_info))
         end
         puts "All vulnerabilities"
         puts vuln
