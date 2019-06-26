@@ -4,6 +4,7 @@ require 'java_buildpack/util/dash_case'
 require 'java_buildpack/util/java_main_utils'
 require 'java_buildpack/util/qualify_path'
 require 'java_buildpack/util/spring_boot_utils'
+require 'digest'
 
 module JavaBuildpack
   module Container
@@ -13,8 +14,13 @@ module JavaBuildpack
       def detect
         puts "My Snyk detect"
         Dir.chdir("/tmp/app/WEB-INF/lib")
-        puts Dir.pwd
-        puts Dir.glob("*")
+        dir =  Dir.pwd
+        Dir.glob("*").each do |file|
+          file_path = "#{dir}/#{file}"
+          puts file_path
+          sha1 = Digest::SHA1.file file_path
+          puts "Checksum SHA1: #{sha1.hexdigest}"
+        end
         nil
       end
     end
