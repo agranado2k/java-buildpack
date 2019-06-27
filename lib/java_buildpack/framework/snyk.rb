@@ -35,7 +35,7 @@ module JavaBuildpack
           package_info = mvn_dependency_info(sha1_hash)
           vuln = vuln.concat(vulnerabilities(package_info))
         end
-        @logger.debut { "vulnerabilities: #{vuln}" }
+        @logger.debug { "vulnerabilities: #{vuln}" }
         raise RuntimeError, "Found vulnerabilities: #{vuln.join(', ')}" unless vuln.empty?
         nil
       end
