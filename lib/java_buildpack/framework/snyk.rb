@@ -23,21 +23,21 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
-        vuln = []
-        puts "My Snyk detect"
-        # puts "mvn_org_base_api: #{@mvn_org_base_api}"
-        # puts "vunl_service_base_api: #{@vunl_service_base_api}"
-        Dir.chdir(LIB_DIR)
-        dir =  Dir.pwd
-        Dir.glob("*").each do |file|
-          file_path = "#{dir}/#{file}"
-          sha1_hash = sha1_for(file_path)
-          package_info = mvn_dependency_info(sha1_hash)
-          vuln = vuln.concat(vulnerabilities(package_info))
-        end
-        puts "All vulnerabilities"
-        puts vuln
-        "Snyk"
+        # vuln = []
+        # puts "My Snyk detect"
+        # # puts "mvn_org_base_api: #{@mvn_org_base_api}"
+        # # puts "vunl_service_base_api: #{@vunl_service_base_api}"
+        # Dir.chdir(LIB_DIR)
+        # dir =  Dir.pwd
+        # Dir.glob("*").each do |file|
+        #   file_path = "#{dir}/#{file}"
+        #   sha1_hash = sha1_for(file_path)
+        #   package_info = mvn_dependency_info(sha1_hash)
+        #   vuln = vuln.concat(vulnerabilities(package_info))
+        # end
+        # puts "All vulnerabilities"
+        # puts vuln
+        # "Snyk"
       end
 
       def compile; end
