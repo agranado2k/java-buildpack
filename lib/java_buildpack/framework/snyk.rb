@@ -24,7 +24,8 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
         vuln = []
-        puts "My Snyk detect"
+        # puts "My Snyk detect"
+        # puts "Checking dependencies for vulnerabilities..."
         # puts "mvn_org_base_api: #{@mvn_org_base_api}"
         # puts "vunl_service_base_api: #{@vunl_service_base_api}"
         Dir.chdir(LIB_DIR)
@@ -35,8 +36,8 @@ module JavaBuildpack
           package_info = mvn_dependency_info(sha1_hash)
           vuln = vuln.concat(vulnerabilities(package_info))
         end
-        puts "All vulnerabilities"
-        puts vuln
+        # puts "All vulnerabilities"
+        # puts vuln
         raise Runtime, "Found vulnerabilities: #{vuln.join(', ')}" unless vuln.empty?
         nil
       end
@@ -48,11 +49,8 @@ module JavaBuildpack
       private
 
       def sha1_for(file_path)
-        puts file_path
         sha1 = Digest::SHA1.file file_path
-        sha1_hash = sha1.hexdigest
-        puts "Checksum SHA1: #{sha1_hash}"
-        sha1_hash
+        sha1.hexdigest
       end
 
       def mvn_dependency_info(sha1_hash)
