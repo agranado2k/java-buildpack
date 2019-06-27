@@ -4,6 +4,7 @@ require 'java_buildpack/util/dash_case'
 require 'java_buildpack/util/java_main_utils'
 require 'java_buildpack/util/qualify_path'
 require 'java_buildpack/util/spring_boot_utils'
+require 'java_buildpack/logging/logger_factory'
 require 'digest'
 require "net/http"
 require 'net/https'
@@ -19,15 +20,13 @@ module JavaBuildpack
         super(context, &version_validator)
         @mvn_org_base_api = context[:configuration]['mvn_org_base_api']
         @vunl_service_base_api = context[:configuration]['vunl_service_base_api']
+        @logger                = JavaBuildpack::Logging::LoggerFactory.instance.get_logger Snyk
       end
 
       # (see JavaBuildpack::Component::BaseComponent#detect)
       def detect
         vuln = []
-        # puts "My Snyk detect"
-        # puts "Checking dependencies for vulnerabilities..."
-        # puts "mvn_org_base_api: #{@mvn_org_base_api}"
-        # puts "vunl_service_base_api: #{@vunl_service_base_api}"
+        @logger.info { "Checking dependencies for vulnerabilities..." }
         Dir.chdir(LIB_DIR)
         dir =  Dir.pwd
         Dir.glob("*").each do |file|
@@ -36,9 +35,8 @@ module JavaBuildpack
           package_info = mvn_dependency_info(sha1_hash)
           vuln = vuln.concat(vulnerabilities(package_info))
         end
-        # puts "All vulnerabilities"
-        # puts vuln
-        raise Runtime, "Found vulnerabilities: #{vuln.join(', ')}" unless vuln.empty?
+        @logger.debut { "vulnerabilities: #{vuln}" }
+        raise RuntimeError, "Found vulnerabilities: #{vuln.join(', ')}" unless vuln.empty?
         nil
       end
 
