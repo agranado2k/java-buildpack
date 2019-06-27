@@ -25,8 +25,8 @@ module JavaBuildpack
       def detect
         vuln = []
         puts "My Snyk detect"
-        puts "mvn_org_base_api: #{@mvn_org_base_api}"
-        puts "vunl_service_base_api: #{@vunl_service_base_api}"
+        # puts "mvn_org_base_api: #{@mvn_org_base_api}"
+        # puts "vunl_service_base_api: #{@vunl_service_base_api}"
         Dir.chdir(LIB_DIR)
         dir =  Dir.pwd
         Dir.glob("*").each do |file|
@@ -64,14 +64,10 @@ module JavaBuildpack
       end
 
       def format_mvn_response(json)
-        puts "json: #{json}"
         response = json[:response][:docs][0]
-        puts "response: #{response}"
         return nil unless response
 
-        t = {group_id: response[:g], artifact_id: response[:a], version: response[:v]}
-        puts "package info: #{t}"
-        t
+        {group_id: response[:g], artifact_id: response[:a], version: response[:v]}
       end
 
       def vulnerabilities(package)
@@ -82,9 +78,7 @@ module JavaBuildpack
         http.use_ssl = true
         request = Net::HTTP::Get.new("/vulnerabilities?group_id=#{package[:group_id]}&artifact_id=#{package[:artifact_id]}&version=#{package[:version]}")
         response = http.request(request)
-        json = JSON.parse(response.body, symbolize_names: true)
-        puts "vulnerabilities list: #{json}"
-        json
+        JSON.parse(response.body, symbolize_names: true)
       end
     end
   end
