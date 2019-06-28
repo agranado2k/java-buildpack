@@ -73,6 +73,7 @@ module JavaBuildpack
         uri = URI.parse(@vunl_service_base_api)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
+        @logger.info { "package: #{package[:group_id]}:#{package[:artifact_id]}:#{package[:version]}" }
         request = Net::HTTP::Get.new("/vulnerabilities?group_id=#{package[:group_id]}&artifact_id=#{package[:artifact_id]}&version=#{package[:version]}")
         response = http.request(request)
         JSON.parse(response.body, symbolize_names: true)
