@@ -36,7 +36,7 @@ module JavaBuildpack
           vuln = vuln.concat(vulnerabilities(package_info))
         end
         @logger.debug { "vulnerabilities: #{vuln}" }
-        raise RuntimeError, "Found vulnerabilities: #{vuln.join(', ')}" unless vuln.empty?
+        raise RuntimeError, "Found #{vuln.size} vulnerabilities: #{vuln.join(', ')}" unless vuln.empty?
         nil
       end
 
